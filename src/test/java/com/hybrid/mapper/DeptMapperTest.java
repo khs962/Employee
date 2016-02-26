@@ -9,7 +9,21 @@ import com.hybrid.model.Dept;
 
 public class DeptMapperTest {
 	public static void main(String[] args) {
+		GenericXmlApplicationContext ctx =null;
+		ctx = new GenericXmlApplicationContext("classpath:spring/beans_db.xml");
 		
+		DeptMapper mapper = ctx.getBean(DeptMapper.class);
+		List<Dept> depts =  mapper.seletAll();
+		
+		for(Dept d : depts){
+			
+			System.out.println(d.getDeptno()+" " + d.getDname()+ " " + d.getLoc());
+		}
+		
+		ctx.close();
+	}
+	
+	void test1(){
 		GenericXmlApplicationContext ctx =null;
 		ctx = new GenericXmlApplicationContext("classpath:spring/beans_db.xml");
 		
@@ -17,10 +31,11 @@ public class DeptMapperTest {
 		SqlSessionTemplate sqlSession = (SqlSessionTemplate) ctx.getBean("sqlSessionTemplate");
 		
 		DeptMapper deptMapper = sqlSession.getMapper(DeptMapper.class);
+		List<Dept> depts1=  deptMapper.seletAll();
 		
-		List<Dept> depts=  deptMapper.seletAll();
+		/* 위 두줄 대체 List<Dept> depts= sqlSession.selectList("com.hybrid.mapper.DeptMapper.selectAll()");*/
 		
-		for(Dept d : depts){
+		for(Dept d : depts1){
 			
 			System.out.println(d.getDeptno()+" " + d.getDname()+ " " + d.getLoc());
 		}

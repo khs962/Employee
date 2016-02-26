@@ -1,5 +1,7 @@
 .classpath
+.gitignore
 .project
 .settings/
 .springBeans
+
 target/
