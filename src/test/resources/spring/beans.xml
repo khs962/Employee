@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 스프링 설정파일(beans.xml)이 자동으로 의존성을 주입하는것 -->
+	<!-- Shape가 동작하기 위해서는 width,color,height 값이 필요하다(의존성) -->
+	<!-- beans 설정만 해주면 new 로 객체 생성할 필요가 없다 -->
+    
+    <!-- 객체화한 SpringTest class를 reference로 관계 설정 -->
+    <bean class="com.hybrid.SpringTest">
+    	<property name="shape" ref="shape"/>
+    	<property name="shape1" ref="shape1"/>
+    	<property name="dateFormat" ref="dataFormat"/>
+    </bean>
+    
+     <bean id="date" class="java.util.Date">
+    	<property name="year" value="115"/>
+    	<property name="month" value="1"/>
+    	<property name="date" value="15"/>
+    </bean>
+    
+    <bean id="date1" class="java.util.Date">
+    	<property name="year" value="116"/>
+    	<property name="month" value="11"/>
+    	<property name="date" value="25"/>
+    </bean>
+    
+    <bean id="dataFormat" class="java.text.SimpleDateFormat">
+    	<constructor-arg value="yyyy/MM/dd hh:mm:ss"/>
+    </bean>
+    
+    
+    
+	<!-- 생성자 주입 -->
+	<bean id="shape1" class="com.hybrid.shape.Shape">
+ 		<constructor-arg><value>1000</value></constructor-arg>
+ 		<constructor-arg><value>2000</value></constructor-arg>
+ 		<constructor-arg><value>3000</value></constructor-arg>
+ 		<property name="date" ref="date"/>
+    </bean>
+    
+    
+    
+	<!-- 설정자 주입 -->
+    <bean id="shape" class="com.hybrid.shape.Shape">
+        <property name="color"><value>30</value></property>
+        <property name="width"><value>100</value></property>
+        <property name="height"><value>200</value></property>
+        <property name="date" ref="date1"/>
+    </bean>
+	
+	
+	
+	
+</beans>
