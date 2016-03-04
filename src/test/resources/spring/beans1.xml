@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean class="com.hybrid.CollectionTest">
+	<property name="color">
+		<list>
+			<value>RED</value>		
+			<value>GREEN</value>
+			<value>BLUE2</value>
+			<value>ORANGE1</value>
+			<value>XXX</value>
+		</list>
+	</property>
+	<property name="language">
+		<map>
+			<entry key="c" value="gcc"/>		
+			<entry key="java" value="Oracle java"/>
+			<entry key="javascript" value="geko"/>
+			<entry key="php" value="script"/>
+		</map>	
+	</property>
+	<property name="locale">
+		<set>
+			<value>서울</value>
+			<value>홍콩</value>
+			<value>런던</value>
+		</set>
+	</property>
+	
+</bean>
+
+</beans>

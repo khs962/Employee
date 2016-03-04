@@ -1,6 +1,8 @@
 package com.hybrid.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hybrid.model.Dept;
 import com.hybrid.model.Emp;
+import com.hybrid.service.DeptService;
 import com.hybrid.service.EmpService;
-
 
 @Controller
 public class EmpController {
@@ -21,40 +24,43 @@ public class EmpController {
 	
 	@Autowired
 	EmpService empService;
-	
-	
+
 	@RequestMapping(value="/emp/list")
 	@ResponseBody
-	public List<Emp> getList(){
-
-		return empService.getList();
+	public Map<String, Object> getList() {
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("success", true);
+		result.put("message", "조회성공");
+		
+		result.put("data", empService.getList());
+		
+		return result;		
 	}
 	
-	@RequestMapping(value="/Emp",method=RequestMethod.GET) //조회하는 부분 select 
+	@RequestMapping(value="/emp", method=RequestMethod.GET)
 	@ResponseBody
-	public Emp getEmp(Integer empno){
-		log.info("getEmp() Empno=" +empno);
+	public Emp getEmp(Integer empno) {
+		log.info("getEmp() empno=" + empno);
 		
 		return empService.getEmp(empno);
 	}
 	
-	@RequestMapping(value="/Emp",method=RequestMethod.POST) // 삽입하는 부분 insert
+	@RequestMapping(value="/emp", method=RequestMethod.POST)
 	@ResponseBody
-	public Emp postEmp(Emp Emp){
-		log.info("Empno =" + Emp.getEmpno());
+	public Emp postEmp(Emp emp) {
+		log.info("empno = " + emp.getEmpno());
 		
-	
-		empService.insert(Emp);
+		empService.insert(emp);
 		
-		return Emp;
+		return emp;
 	}
 	
-	@RequestMapping(value="/Emp",method=RequestMethod.DELETE)
+	@RequestMapping(value="/emp", method=RequestMethod.DELETE)
 	@ResponseBody
-	public Emp deleteEmp(Integer Empno){
+	public Emp deleteEmp(Integer empno) {
 		
-		
-		return empService.delete(Empno);
+		return empService.delete(empno);
 	}
-	
+
 }
