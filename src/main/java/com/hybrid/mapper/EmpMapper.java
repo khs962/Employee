@@ -3,16 +3,18 @@ package com.hybrid.mapper;
 import java.util.List;
 
 import com.hybrid.model.Emp;
+import com.hybrid.model.Mgr;
 
 public interface EmpMapper {
 	
-	List<Emp> seletAll();
+	List<Emp> selectAll();
 	
 	//리스트인지 하나인지는 mybatis가 판단하고,(리턴타입까지)
 	// ArrayList는 자동으로 mybatis가 만들어준다.
 	//개발자는 정의만해주면 된다. List 인지 인자값을 어떤것을 받을 것인지만 작성
+	List<Mgr> selectMgrs();
 	
-	Emp seletByEmpno(int emp); // id 가 메소드처럼 쓰인다.
+	Emp selectByEmpno(int emp); // id 가 메소드처럼 쓰인다.
 	
 	int insert(Emp emp); 
 	int updateByEmpno(Emp emp);

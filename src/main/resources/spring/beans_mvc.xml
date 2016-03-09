@@ -16,4 +16,11 @@
 	
 	<mvc:annotation-driven/>
 	<mvc:default-servlet-handler/>
+	
+	<mvc:view-resolvers>
+		<mvc:jsp prefix="/WEB-INF/" suffix=".jsp"/>
+	</mvc:view-resolvers>
+	<!-- 확장자명을 숨김으로써 어떤 환경에서 제작됬는지를 모르고 또한 bean을 숨길수 있다. -->
+	<!-- view resolvers는 반드시 스프링을(controller) 거친다. -->
+	
 </beans>

@@ -3,7 +3,7 @@
 <mapper namespace="com.hybrid.mapper.EmpMapper">
 	<sql id="FromEmp">
     	select empno,
-    	   ename,
+    	  	   ename,
     		   job,
     		   mgr,
     		   hiredate,
@@ -14,18 +14,63 @@
     </sql>
     
     
-    <select id="seletAll" resultType="com.hybrid.model.Emp">
+    <select id="selectAll" resultType="com.hybrid.model.Emp">
     	<include refid="FromEmp"/>
+    	order by empno asc
     </select>
     
-    <select id="seletByEmpno" 
-    	resultType="com.hybrid.model.Emp" 
-    	parameterType="int">
-    	
-    	<include refid="FromEmp"/>
-    	 where empno = #{empno}
-    	 
+    <select id="selectMgrs" resultType="com.hybrid.model.Emp">
+        select empno,
+        		ename
+        from emp
+    	order by empno asc
     </select>
+    
+	<!--결과 맵핑 -->
+    <resultMap type="com.hybrid.model.Emp" id="resultEmp">
+        <id		column="emp_empno" 		property="empno"/> <!-- emp_no에 empno에 값을 넣어라 -->
+        <result column="emp_ename" 		property="ename"/>
+        <result column="emp_job" 		property="job"/>
+        <result column="emp_mgr" 		property="mgr"/>
+        <result column="emp_hiredate" 	property="hiredate"/>
+        <result column="emp_sal" 		property="sal"/>
+        <result column="emp_comm" 		property="comm"/>
+        <result column="emp_deptno" 	property="deptno"/>
+        <association javaType="com.hybrid.model.Dept"  property="dept">
+            <id		column="dept_deptno" property="deptno"/>
+            <result column="dept_dname"  property="dname"/>
+            <result column="dept_loc" 	 property="loc"/>
+        </association>
+        
+        
+    </resultMap>
+    
+	<!-- 결과에 대해 자동 매핑을 하지 말고 직접매핑한데로 맵핑하라 -->
+    <select id="selectByEmpno" resultType="com.hybrid.model.Emp" resultMap="resultEmp">
+    select 
+       e.empno  as emp_empno,
+       e.ename	as emp_ename,
+       e.job	as emp_job,
+       e.mgr	as emp_mgr,
+       e.hiredate as emp_hiredate,
+       e.sal 	as emp_sal,
+       e.comm 	as emp_comm,
+       e.deptno as emp_deptno,
+	   d.deptno as dept_deptno,
+	   d.dname 	as dept_dname,
+	   d.loc 	as dept_loc
+	from emp e left outer join dept d
+		 on e.deptno = d.deptno
+  	where empno = #{empno} 
+    </select>
+<!--from   emp e, dept d -->
+<!--where  e.deptno = d.deptno -->
+<!--and	   empno = 7369 -->
+<!-- as를 써준이유 : 동일한 컬럼이 있으면 오류나기 때문 -->
+<!-- 튜플 값이 없는 경우가 있기 때문에 inner는 안된다. -->
+<!--  inner join은 두 속성값이 일치할 때만 출력된다. -->
+
+   
     
     <insert id="insert" parameterType="com.hybrid.model.Emp">
     	insert into emp
@@ -43,15 +88,15 @@
     	(
     		#{empno},
     		#{ename},
-    		#{job},
-    		#{mgr},
-    		#{hiredate},
-    		#{hiredate},
-    		#{sal},
-    		#{comm},
-    		#{deptno} 
+    		#{job,		jdbcType=VARCHAR},
+    		#{mgr,		jdbcType=NUMERIC},
+    		#{hiredate, jdbcType=TIMESTAMP},
+    		#{sal,		jdbcType=NUMERIC},
+    		#{comm,		jdbcType=NUMERIC},
+    		#{deptno,	jdbcType=NUMERIC} 
     	)
     </insert>
+    <!-- jdbcType은 칼럼 값이 null 일경우 타입을 지정해줘야한다./ -->
     
     <update id="updateByEmpno" parameterType="com.hybrid.model.Emp">
     	update emp
@@ -62,7 +107,7 @@
     	   	   sal	  = #{sal},
     	   	   comm	  = #{comm},
     	   	   deptno = #{deptno}
-    	 where empno = #{empno}
+    	 where empno  = #{empno}
     
     </update>
     

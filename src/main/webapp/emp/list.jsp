@@ -19,29 +19,42 @@ app.controller('listController', function($scope, $http){
 	
 	var ajax = $http.get("/Employee/emp/list");
 	
-	ajax.then(function(res) {		// 성공 시(200)
-		console.dir(res);
-		$scope.response = res.data;	// 성공 시 들어오는 data
-	}, function(res) {				// 실패했을 경우 (404, 500)
-		console.dir(res);
+	ajax.then(function(value) {		// 성공 시(200)
+		console.dir(value);
+		$scope.emps = value.data;	// 성공 시 들어오는 data
 	});
+	
 });
 </script>
 </head>
 <body data-ng-controller="listController" class="container">
-<div class="row">
-	<div class="col-md-4">{{response.success}}</div>
-	<div class="col-md-4">{{response.message}}</div>
-	<div class="col-md-4"><pre>{{response.data}}</pre></div>
-</div>
-
+<br/><br/>
+<a href="append.jsp" class="btn btn-success">직원 추가</a>
+<br/>
+<h1>직원 리스트</h1>
 <table class="table table-striped">
 	<thead>
-		<tr><th>empno</th><th>ename</th></tr>
+		<tr>
+			<th>empno</th>
+			<th>ename</th>
+			<th>job</th>
+			<th>mgr</th>
+			<th>hiredate</th>
+<!-- 		<th>sal</th> -->
+<!-- 		<th>comm</th> -->
+			<th>수정</th>
+			<th>삭제</th>
+		</tr>
 	</thead>
 	<tbody>
-		<tr data-ng-repeat="emp in response.data">
-			<td>{{emp.empno}}</td><td>{{emp.ename}}</td>
+		<tr data-ng-repeat="emp in emps">
+			<td>{{emp.empno}}</td>
+			<td><a href="detail.jsp?empno={{emp.empno}}">{{emp.ename}}</a></td>
+			<td>{{emp.job}}</td>
+			<td>{{emp.mgr}}</td>
+			<td>{{emp.hiredate | date : 'yyyy년 MM월 dd일'}}</td>
+			<td><a href="update.jsp?empno={{emp.empno}}"><i class="glyphicon glyphicon-edit"></i></a></td>
+			<td><a href="delete.jsp?empno={{emp.empno}}"><i class="glyphicon glyphicon-trash"></i></a></td>
 		</tr>
 	</tbody>
 </table>

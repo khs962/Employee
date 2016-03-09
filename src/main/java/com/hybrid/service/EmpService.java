@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hybrid.mapper.EmpMapper;
 import com.hybrid.model.Emp;
+import com.hybrid.model.Mgr;
 
 
 @Service
@@ -18,13 +19,19 @@ public class EmpService {
 
 	@Transactional			// 실행시 자동 처리 commint을 해줌
 	public List<Emp> getList(){
-		List<Emp> emps = empMapper.seletAll();
+		List<Emp> emps = empMapper.selectAll();
 		return emps;
+	}
+	
+	@Transactional			// 실행시 자동 처리 commint을 해줌
+	public List<Mgr> getMgrs(){
+		List<Mgr> mgrs = empMapper.selectMgrs();
+		return mgrs;
 	}
 	
 	@Transactional
 	public Emp getEmp(Integer empno){
-		return empMapper.seletByEmpno(empno);
+		return empMapper.selectByEmpno(empno);
 	}
 	
 	@Transactional
@@ -35,10 +42,15 @@ public class EmpService {
 	@Transactional
 	public Emp delete(Integer empno){
 		
-		Emp emp = empMapper.seletByEmpno(empno); // 조회 후
+		Emp emp = empMapper.selectByEmpno(empno); // 조회 후
 		empMapper.deleteByEmpno(empno); //삭제 수행
 		
 		return emp; //지운 정보를 리턴
+	}
+	
+	@Transactional
+	public void update(Emp emp){
+		empMapper.updateByEmpno(emp);
 	}
 	
 }

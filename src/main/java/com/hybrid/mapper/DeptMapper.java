@@ -17,6 +17,8 @@ public interface DeptMapper {
 	int insert(Dept dept); 
 	int updateByDeptno(Dept dept);
 	int deleteByDeptno(int dept);
+
+	
 	
 	// 이렇게 불러오기만 하면 자동으로 각 기능이 수행 된다.
 	

@@ -1,30 +1,4 @@
-Rem Copyright (c) 1990 by Oracle Corporation
-Rem NAME
-REM    UTLSAMPL.SQL
-Rem  FUNCTION
-Rem  NOTES
-Rem  MODIFIED
-Rem	gdudey	   06/28/95 -  Modified for desktop seed database
-Rem	glumpkin   10/21/92 -  Renamed from SQLBLD.SQL
-Rem	blinden   07/27/92 -  Added primary and foreign keys to EMP and DEPT
-Rem	rlim	   04/29/91 -	      change char to varchar2
-Rem	mmoore	   04/08/91 -	      use unlimited tablespace priv
-Rem	pritto	   04/04/91 -	      change SYSDATE to 13-JUL-87
-Rem   Mendels	 12/07/90 - bug 30123;add to_date calls so language independent
-Rem
-rem
-rem $Header: utlsampl.sql 7020100.1 94/09/23 22:14:24 cli Generic<base> $ sqlbld.sql
-rem
-SET TERMOUT OFF
-SET ECHO OFF
 
-rem CONGDON    Invoked in RDBMS at build time.	 29-DEC-1988
-rem OATES:     Created: 16-Feb-83
-
-GRANT CONNECT,RESOURCE,UNLIMITED TABLESPACE TO SCOTT IDENTIFIED BY tiger;
-ALTER USER SCOTT DEFAULT TABLESPACE USERS;
-ALTER USER SCOTT TEMPORARY TABLESPACE TEMP;
-CONNECT SCOTT/TIGER
 DROP TABLE DEPT;
 CREATE TABLE DEPT
        (DEPTNO NUMBER(2) CONSTRAINT PK_DEPT PRIMARY KEY,
@@ -33,12 +7,12 @@ CREATE TABLE DEPT
 DROP TABLE EMP;
 CREATE TABLE EMP
        (EMPNO NUMBER(4) CONSTRAINT PK_EMP PRIMARY KEY,
-	ENAME VARCHAR2(10 char),
+	ENAME VARCHAR2(10 char) not null,
 	JOB VARCHAR2(9 char),
 	MGR NUMBER(4),
 	HIREDATE DATE,
-	SAL NUMBER(7,2),
-	COMM NUMBER(7,2),
+	SAL NUMBER(7),
+	COMM NUMBER(7),
 	DEPTNO NUMBER(2) CONSTRAINT FK_DEPTNO REFERENCES DEPT);
 INSERT INTO DEPT VALUES
 	(10,'ACCOUNTING','NEW YORK');
@@ -95,5 +69,3 @@ INSERT INTO SALGRADE VALUES (4,2001,3000);
 INSERT INTO SALGRADE VALUES (5,3001,9999);
 COMMIT;
 
-SET TERMOUT ON
-SET ECHO ON

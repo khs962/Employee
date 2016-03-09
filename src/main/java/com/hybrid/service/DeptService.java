@@ -40,4 +40,11 @@ public class DeptService {
 		return dept; //지운 정보를 리턴
 	}
 	
+	@Transactional
+	public void update(Dept dept) {
+		deptMapper.updateByDeptno(dept);
+	}
+	
+
+	
 }

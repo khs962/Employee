@@ -4,7 +4,7 @@
 <html data-ng-app="employee">	<!-- ng-app는 표준에 맞지 않아 warning이 나므로 앞에 data붙여줌 -->
 <head>
 <meta charset="UTF-8">
-<title>list.jsp</title>
+<title>update.jsp</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -16,54 +16,47 @@
 var app = angular.module('employee', []);	// angular의 module생성 
 
 //controller 생성, $: angular에서 미리 제공하는 모델객체
-app.controller('appendController', function($scope, $http){	
+app.controller('updateController', function($scope, $http){	
 	// app.controller : angular controller
 	// body에서 data-ng-controller="appendController"를 만난 후 이 함수로 들어온다
 	// alert("appendController...");
-	console.log("appendController...");
+	console.log("updateController...");
 
 	// $scope : map 객체, View와 긴밀히 연동 
 	// $http : map, Ajax를 호출하기 위해 미리 만들어놓은 객체
 	
+	$scope.deptno = ${param.deptno};
+	$scope.dept = {};
+	//서버에서 param의 deptno 값을 가져와야한다.
+	var ajax = $http.get("/Employee/dept?deptno=" + $scope.deptno);
+	ajax.then(function(value) {
+		$scope.dept = value.data;
+	});
+	
 	$scope.submit = function(){
-		var ajax = $http.post("/Employee/dept",$scope.dept);
+		var ajax = $http.put("/Employee/dept", $scope.dept);
 		ajax.then(function(value) {
-			console.dir(value);
 			if(value.data.success){
-				location.href ="list.jsp";
+				alert(value.data.message);
+				location.href = "list.jsp";	
 			}else{
 				alert(value.data.message);
 			}
 		}, function(reason) {
 			console.dir(reason);
+				
 		});
-	};
-	
-	/*
-	if(value.data.success) 가 true면 list.jsp로 이동
-	
-							false면 data.message를 alert창으로 띄운다.
-	*/
-	
-	/*
-	초기값이 없으면 양방향 바인딩에 의해 알아서 만들어짐
-	$scope.data = {
-			deptno : 10,
-			dname : "총무부",
-			loc : "서울"
-	}; */
-	
-	$scope.format = function(){
-		var json = JSON.stringify(deptForm, null, 5);	// 서버에서 deptForm객체를 json string으로 변환함
 		
-		return json;
-	}
-
+		
+	};
+	// submit 버튼이 눌리면 함수가 실행됨
+	// put으로 dept바디를 넘겨야 한다.
 });
+
 
 </script>
 </head>
-<body data-ng-controller="appendController" class="container-fluid">
+<body data-ng-controller="updateController" class="container-fluid">
 <!-- appendController : data 담당 / container-fluid : bootstrap, 여백 없음-->
 
 <!-- 두 문서 간 연결 -->
@@ -71,7 +64,8 @@ app.controller('appendController', function($scope, $http){
 
 <!-- 바인딩 확인 -->
 <pre>{{dept}}</pre>
-
+<br/>
+<h1>부서수정</h1>
 <!-- format() : model에 있는 format 객체를 binding처리하여 form tag에 변경이 있으면 자동 바인딩 -->
 <!-- <textarea rows="10" cols="100">{{format()}}</textarea> -->
 
@@ -111,9 +105,10 @@ app.controller('appendController', function($scope, $http){
 			   required="required"
 			   data-ng-min="0"	
 			   data-ng-max="99"
+			   readonly="readonly"
 			   
 			   />
-			   
+			   <!--readonly="readonly" 과 disabled="disabled" 같다  -->
 			   <!-- type="number" only 2자리 숫자, 문자입력 시 invalid=true, valid 할 경우에만 deptno로 저장됨-->
 			   <!-- 양방향바인딩, 자동으로 scope 밑의 deptno로 자동적으로 변수가 만들어지며
 			   deptno 라는 이름으로 바인딩 됨,
@@ -175,7 +170,7 @@ app.controller('appendController', function($scope, $http){
 	
 	
 	<!-- invalid=true일 경우 button이 disable되어야 함 -->
-	<button type="submit" data-ng-disabled="deptForm.$invalid" class="btn btn-warning">부서추가</button>
+	<button type="submit" data-ng-disabled="deptForm.$invalid" class="btn btn-warning">부서 수정</button>
 </form>
 
 </body>

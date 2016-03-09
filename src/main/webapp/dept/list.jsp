@@ -40,7 +40,7 @@ app.controller('listController', function($scope, $http){
 			$scope.left = "";
 			$scope.right = "";
 			$scope.depts = [
-				{deptno : 100, dname : "총무부", loc : "서울"}
+				{deptno : 90, dname : "경제부", loc : "서울"}
 			];
 			break;
 		case "right":
@@ -55,10 +55,16 @@ app.controller('listController', function($scope, $http){
 	ajax.then(function(response){	// ajax 호출하여 에러가 없이 성공하면 함수호출
 		console.dir(response);		// log 확인
 		console.dir(response.data);
+		
 		$scope.depts = response.data;	// $scope : map 객체, depts : key, 배열(4개)
 		// Ajax로 받아온 데이터를 scope에 저장하고, View에 바인딩하기 위해
 		// body에서 listController와 관련된 {{}} expression을 찾고 이에 해당하는 key 출력
+		
 	});
+	
+	$scope.format= function(){
+		return JSON.stringify($scope.depts, null, 4);
+	};
 });
 
 </script>
@@ -76,7 +82,7 @@ app.controller('listController', function($scope, $http){
 
 <div class="row">
 	<div class="col-sm-4" style="background-color: red">{{left}}</div>
-	<div class="col-sm-4" style="background-color: green"><pre>{{message}}</pre></div>
+	<div class="col-sm-4" style="background-color: green"><pre>{{format()}}</pre></div>
 	<!-- <div class="col-sm-4" style="background-color: green">{{center}}<pre>{{depts}}</pre></div>	
 		model에 있는 데어터를 읽는 방법 : {{data}} -->
 	<div class="col-sm-4" style="background-color: blue">{{right}}</div>
@@ -106,14 +112,14 @@ app.controller('listController', function($scope, $http){
 	<!-- repeat : angular의 반복 지시어 (향상된 for문과 흡사) -->
 	<!-- depts : scope의 depts 배열 -->
 	<li data-ng-repeat="dept in depts">
-		{{dept.deptno}} {{dept.dname}} {{dept.loc}}
+		<a href="detail.jsp?deptno={{dept.deptno}}">{{dept.deptno}}</a> {{dept.dname}} {{dept.loc}}
 	</li>
 </ul>
 
 <hr>
 <!-- 부서추가 링크 -->
-<a href="append.jsp" class="btn btn-success">부서추가</a>
 
+<a href="append.jsp" class="btn btn-success">부서추가</a>
 <hr>
 <table class="table table-bordered table-striped table-hover">
 	<thead>
@@ -121,13 +127,17 @@ app.controller('listController', function($scope, $http){
 			<th>deptno</th>
 			<th>dname</th>
 	 		<th>loc</th>
+	 		<th>수정</th>
+	 		<th>삭제</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr data-ng-repeat="dept in depts">
-			<td>{{dept.deptno}}</td>
+			<td><a href="detail.jsp?deptno={{dept.deptno}}">{{dept.deptno}}</a></td>
 			<td>{{dept.dname}}</td>
 			<td>{{dept.loc}}</td>
+			<td><a href="update.jsp?deptno={{dept.deptno}}" class="btn btn-info">수정</a></td>
+			<td><a href="delete.jsp?deptno={{dept.deptno}}" class="btn btn-danger">삭제</a></td>
 		</tr>
 	</tbody>
 </table>

@@ -12,6 +12,7 @@
     
     <select id="seletAll" resultType="com.hybrid.model.Dept">
     	<include refid="FromDept"/>
+    	order by deptno asc
     </select>
     
     <select id="seletByDeptno" 
